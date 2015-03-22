@@ -4,93 +4,49 @@ const BASE_DIR = 'examples';
 let dir = process.argv[2];
 if(!dir){
   console.error('!!!ERROR!!!: invalid arguments');
-  return;
+  throw new Error('invalid arguments');
 }
 let num = dir.match(/ex(\d+)/)[1];
 let dirPath = `${BASE_DIR}/${dir}`;
+
 let jsTemplate =
   `'use strict';
-require('../app.styl');
-let THREE = require('three');
-let OrbitControls = require('three-orbit-controls')(THREE);
-let Stats = require('stats-js');
+let PIXI = require('pixi.js');
 
-let container,stats;
-let camera, controls, scene, renderer;
+let stage, renderer;
 
 let init = function(){
-  container = document.getElementById('container');
-
-  scene = new THREE.Scene();
-
-  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 4000 );
-  camera.position.z = 1750;
-  controls = new OrbitControls( camera, container );
-
-  var axisHelper = new THREE.AxisHelper(2);
-  scene.add(axisHelper);
+  stage = new PIXI.Stage(0xFFFFFF);
+  renderer = new PIXI.WebGLRenderer(800, 600);
+  document.body.appendChild(renderer.view);
 
   // -----------------------------------------------------------------
   // insert your creativity :D
   // -----------------------------------------------------------------
-
-
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
-  renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  container.appendChild( renderer.domElement );
-
-  // set stats
-  stats = new Stats();
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.top = '0px';
-  document.body.appendChild( stats.domElement );
-
-  window.addEventListener( 'resize', onWindowResize, false );
-
-};
-
-let onWindowResize = function(){
-
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize( window.innerWidth, window.innerHeight );
-
-};
-
-let animate = function(){
-
-  // insert your creativity :D
 
   requestAnimationFrame(animate);
-  stats.update();
-  render();
-
 };
 
-let render = function(){
 
-  renderer.render( scene, camera );
-
+let animate = function() {
+  requestAnimationFrame( animate );
+  renderer.render(stage);
 };
 
 init();
-animate();`;
+
+`;
 
 let htmlTemplate =
-  `<!DOCTYPE html>
-<html>
-<head lang="en">
+  `<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
   <title>${dir}</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <script src="/node_modules/three/three.min.js"></script>
+  <script src="/node_modules/pixi.js/bin/pixi.js"></script>
 </head>
 <body>
-<div id="container"></div>
-
-<script type="text/javascript" src="/dist/app${num}.bundle.js"></script>
+<script src="/dist/app${num}.bundle.js"></script>
 </body>
 </html>`;
 

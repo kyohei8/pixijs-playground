@@ -12,7 +12,7 @@
   "dependencies": {
     "basic-auth": "^1.0.0",
     "connect": "^3.3.4",
-    "pixi.js": "^3.0.0-rc3",
+    "pixi.js": "^2.2.7",
     "serve-index": "^1.6.3",
     "serve-static": "^1.9.1",
     "stats-js": "^1.0.0-alpha1"
